@@ -1,3 +1,7 @@
+# WPH modified:
+# - gain and const values
+# - fixed scaling
+# - print values on one line
 #!/usr/bin/env python3
 
 import math
@@ -119,8 +123,12 @@ def posneg(value, max_value=None, skim=0, nan_color=(0.5, 0.5, 0.5), zero_color=
 
 @dataclass
 class BraitenbergAgentConfig:
-    gain: float = 0.5
-    const: float = 0.1
+    gain: float = 0.6
+    const: float = 0.005
+    #gainL: float = 0.5
+    #gainR: float = 0.5
+    #constL: float = 0
+    #constR: float = 0
 
 
 class BraitenbergAgent:
@@ -176,8 +184,8 @@ class BraitenbergAgent:
         # now we just compute the activation of our sensors
         l = float(np.sum(P * self.left))
         r = float(np.sum(P * self.right))
-        print(f"l = {l}")
-        print(f"r = {r}")
+        # print(f"l = {l}")
+        # print(f"r = {r}")
         # These are big numbers -- we want to normalize them.
         # We normalize them using the history
 
@@ -187,20 +195,24 @@ class BraitenbergAgent:
         self.l_min = min(l, self.l_min)
         self.r_min = min(r, self.r_min)
 
-        print(f"l_max = {self.l_max}")
-        print(f"r_max = {self.r_max}")
-        print(f"l_min = {self.l_min}")
-        print(f"r_min = {self.r_min}")
+        # print(f"l_max = {self.l_max}")
+        # print(f"r_max = {self.r_max}")
+        # print(f"l_min = {self.l_min}")
+        # print(f"r_min = {self.r_min}")
 
         # now rescale from 0 to 1
-        ls = rescale(l, self.l_min, self.l_max)
-        print(f"ls = {ls}")
-        rs = rescale(r, self.r_min, self.r_max)
-        print(f"rs = {rs}")
+        # ls = rescale(l, self.l_min, self.l_max)
+        # print(f"ls = {ls}")
+        # rs = rescale(r, self.r_min, self.r_max)
+        # print(f"rs = {rs}")
+        scale = 700000
+        ls = l / scale
+        rs = r / scale
         gain = self.config.gain
         const = self.config.const
         pwm_left = const + ls * gain
         pwm_right = const + rs * gain
+        print (f"ls = {ls} - rs = {rs} | pwm left = {pwm_left}, pwm right = {pwm_right}")
 
         return pwm_left, pwm_right
 

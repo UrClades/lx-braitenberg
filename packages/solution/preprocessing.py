@@ -1,10 +1,14 @@
+#WPH: modified HSV-limits
 import cv2
 import numpy as np
 
 # simulator images
-lower_hsv = np.array([20, 100, 100])
-upper_hsv = np.array([30, 255, 255])
+# lower_hsv = np.array([20, 100, 100])
+# upper_hsv = np.array([30, 255, 255])
 
+# values for green duckies
+lower_hsv = np.array([35, 62, 0])
+upper_hsv = np.array([79, 248, 255])
 
 # real images
 # lower_hsv = np.array([12, 89, 76])
